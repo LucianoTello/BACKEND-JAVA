@@ -1,0 +1,72 @@
+openapi: 3.0.1
+info:
+  title: API de Pedidos
+  description: API para la gestión de pedidos
+  version: 1.0.0
+  contact:
+    name: "Luciano Tello - UCC - BACKEND"
+    email: "luciano_estudiort@hotmail.com"
+servers:
+  - url: http://localhost:8083
+paths:
+  /api/orders:
+    post:
+      tags:
+        - orders
+      summary: Crear un nuevo pedido
+      requestBody:
+        description: Datos del nuevo pedido
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Orders'
+      responses:
+        '200':
+          description: Orden creada exitosamente
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Orden creada exitosamente"
+        '400':
+          description: Error en los datos de la solicitud
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example: ["Error en los datos de la solicitud"]
+        '401':
+          description: Token JWT inválido o expirado
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Token JWT inválido o expirado"
+        '404':
+          description: No se encontró el producto
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "No se encontró el producto"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Error al comunicarse con el servicio de productos"
+components:
+  schemas:
+    Orders:
+      type: object
+      properties:
+        product:
+          type: integer
+          example: 1
+        amount:
+          type: integer
+          example: 10

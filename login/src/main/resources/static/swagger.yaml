@@ -1,0 +1,76 @@
+openapi: 3.0.1
+info:
+  title: API de Autenticación
+  description: API para la autenticación de usuarios
+  version: 1.0.0
+  contact:
+    name: "Luciano Tello - UCC - BACKEND"
+    email: "luciano_estudiort@hotmail.com"
+servers:
+  - url: http://localhost:8083
+paths:
+  /api/auth/signup:
+    post:
+      tags:
+        - auth
+      summary: Crear un nuevo usuario
+      requestBody:
+        description: Datos del nuevo usuario
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: Usuario creado con éxito
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Usuario creado con éxito!"
+        '500':
+          description: Error al crear usuario
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Error al crear usuario: {mensaje de error}"
+  /api/auth/login:
+    post:
+      tags:
+        - auth
+      summary: Autenticar un usuario
+      requestBody:
+        description: Credenciales del usuario
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: Token de autenticación
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "token.jwt.aqui"
+        '401':
+          description: Credenciales incorrectas
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Error: Credenciales incorrectas"
+components:
+  schemas:
+    Login:
+      type: object
+      properties:
+        user:
+          type: string
+          example: "usuario"
+        password:
+          type: string
+          example: "contraseña"

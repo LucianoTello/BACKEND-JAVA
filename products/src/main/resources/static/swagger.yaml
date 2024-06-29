@@ -1,0 +1,230 @@
+openapi: 3.0.1
+info:
+  title: API de Productos
+  description: API para la gestión de productos
+  version: 1.0.0
+  contact:
+    name: "Luciano Tello - UCC - BACKEND"
+    email: "luciano_estudiort@hotmail.com"
+servers:
+  - url: http://localhost:8083
+paths:
+  /api/products:
+    get:
+      tags:
+        - products
+      summary: Obtener todos los productos
+      responses:
+        '200':
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - products
+      summary: Crear un nuevo producto
+      requestBody:
+        description: Datos del nuevo producto
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Producto agregado con éxito
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Producto agregado con éxito!"
+        '400':
+          description: Error en los datos de la solicitud
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example: ["Error en los datos de la solicitud"]
+        '401':
+          description: Token JWT inválido o expirado
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Token JWT inválido o expirado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Error interno del servidor"
+    put:
+      tags:
+        - products
+      summary: Actualizar un producto
+      requestBody:
+        description: Datos del producto a actualizar
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Producto modificado con éxito
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Producto modificado con éxito!"
+        '400':
+          description: Error en los datos de la solicitud
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example: ["Error en los datos de la solicitud"]
+        '401':
+          description: Token JWT inválido o expirado
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Token JWT inválido o expirado"
+        '404':
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Producto no encontrado"
+  /api/products/{id}:
+    get:
+      tags:
+        - products
+      summary: Obtener un producto por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del producto
+      responses:
+        '200':
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Producto no encontrado"
+    delete:
+      tags:
+        - products
+      summary: Eliminar un producto por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del producto
+      responses:
+        '200':
+          description: Producto eliminado con éxito
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Producto eliminado con éxito!"
+        '404':
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Producto no encontrado"
+        '401':
+          description: Token JWT inválido o expirado
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Token JWT inválido o expirado"
+  /api/products/stock:
+    put:
+      tags:
+        - products
+      summary: Actualizar stock de un producto
+      requestBody:
+        description: Datos del stock a actualizar
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                amount:
+                  type: integer
+                  example: 10
+      responses:
+        '200':
+          description: Stock actualizado con éxito
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Stock actualizado con éxito!"
+        '400':
+          description: No se pudo actualizar el stock
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "No se pudo actualizar el stock"
+        '404':
+          description: Producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Producto no encontrado"
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Producto A"
+        description:
+          type: string
+          example: "Descripción del producto A"
+        price:
+          type: number
+          format: float
+          example: 100.50
+        stock:
+          type: integer
+          example: 50
